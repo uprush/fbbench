@@ -9,7 +9,7 @@ START=`date +%s`
 echo
 echo "`date` Start pcopy job. Copy parallel $COPY_PARALLEL."
 
-$S3A -mkdir -p $S3_BASE_DIR
+eval "$S3A -mkdir -p $S3_BASE_DIR"
 
 # Generate copy source file list
 rm -f /tmp/sourcelist
@@ -58,7 +58,7 @@ echo "`date` Done copying files, time: $((COPY_END-LIST_END)) second(s)"
 
 # Check target data size.
 echo "Checking target data size."
-$S3A -du -s -h $S3_BASE_DIR
+eval "$S3A -du -s -h $S3_BASE_DIR"
 
 DU_END=`date +%s`
 
