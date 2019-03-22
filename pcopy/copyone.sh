@@ -9,8 +9,8 @@ FILE=$1
 TO_DIR=$2
 
 # create target dir
-$S3A -mkdir -p $TO_DIR
+eval "$S3A -mkdir -p $TO_DIR"
 
 # copy file
 echo "Copy $FILE to $TO_DIR"
-$S3A -cp $FILE $TO_DIR
+eval "$S3A -cp $FILE $TO_DIR"
