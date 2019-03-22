@@ -33,7 +33,8 @@ rm -f /tmp/copycommands
 for FILE in `cat /tmp/tocopy`
 do
     DIR=`dirname "$FILE"`
-    TABLE_DIR=`echo "$DIR" | sed -n -e 's/^.*labtest\.db//p'`
+    # extract table dir: file fullpath - base dir
+    TABLE_DIR=${DIR:${#HDFS_BASE_DIR}:256}
     S3_TO_DIR="${S3_BASE_DIR}${TABLE_DIR}"
     echo "bash $COPY_HOME/copyone.sh $FILE $S3_TO_DIR" >> /tmp/copycommands
 done
