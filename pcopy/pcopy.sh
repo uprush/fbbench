@@ -9,7 +9,7 @@ START=`date +%s`
 echo
 echo "`date` Start pcopy job. Copy parallel $COPY_PARALLEL."
 
-eval "$S3A -mkdir -p $S3_BASE_DIR"
+eval "$HDFS -mkdir -p $TARGET_BASE_DIR"
 
 # Generate copy source file list
 rm -f /tmp/sourcelist
@@ -34,9 +34,9 @@ for FILE in `cat /tmp/tocopy`
 do
     DIR=`dirname "$FILE"`
     # extract table dir: file fullpath - base dir
-    TABLE_DIR=${DIR:${#HDFS_BASE_DIR}:256}
-    S3_TO_DIR="${S3_BASE_DIR}${TABLE_DIR}"
-    echo "bash $COPY_HOME/copyone.sh $FILE $S3_TO_DIR" >> /tmp/copycommands
+    TABLE_DIR=${DIR:${#SOURCE_BASE_DIR}:256}
+    TARGET_DIR="${TARGET_BASE_DIR}${TABLE_DIR}"
+    echo "bash $COPY_HOME/copyone.sh $FILE $TARGET_DIR" >> /tmp/copycommands
 done
 
 
@@ -59,7 +59,7 @@ echo "`date` Done copying files, time: $((COPY_END-LIST_END)) second(s)"
 
 # Check target data size.
 echo "Checking target data size."
-eval "$S3A -du -s -h $S3_BASE_DIR"
+eval "$HDFS -du -s -h $TARGET_BASE_DIR"
 
 DU_END=`date +%s`
 
